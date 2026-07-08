@@ -1,0 +1,875 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+import Button from '../ui/Button.astro';
+
+const menuItems = await getCollection('menu');
+
+const categories = [
+  'promociones',
+  'arma-tu-roll',
+  'handrolls',
+  'sushi-bowl',
+  'sushi-burguer',
+  'sushipleto',
+  'rico-picoteo',
+  'bebestibles',
+  'extras'
+];
+
+const categoryNames: Record<string, string> = {
+  'arma-tu-roll': 'Arma tu Roll',
+  'promociones': 'Promociones',
+  'handrolls': 'Handrolls',
+  'sushi-bowl': 'Sushi Bowl',
+  'sushi-burguer': 'Sushi Burguer',
+  'sushipleto': 'Sushipleto',
+  'rico-picoteo': 'Rico Picoteo',
+  'bebestibles': 'Bebestibles',
+  'extras': 'Extras'
+};
+
+const whatsappPhone = "+56933482140";
+---
+
+<section id="menu" class="menu-section">
+  <div class="container">
+    <div class="menu-header">
+      <h2 class="menu-title">Nuestra Carta</h2>
+      <p class="menu-lead">Arma tu carrito con tus elecciones y envía tu pedido a nuestro WhatsApp</p>
+    </div>
+
+    <div class="pills-wrapper">
+      <div class="pills-track" role="tablist" aria-label="Categorías del menú">
+        {categories.map((cat, idx) => (
+          <button 
+            class={`pill ${idx === 0 ? 'active' : ''}`} 
+            role="tab" 
+            aria-selected={idx === 0 ? 'true' : 'false'} 
+            data-category={cat} 
+            id={`tab-${cat}`}
+          >
+            {categoryNames[cat]}
+          </button>
+        ))}
+        <span class="pills-fade"></span>
+      </div>
+    </div>
+
+    <div class="menu-container">
+      <div class="menu-grid" id="menu-grid">
+        {menuItems.map((item) => {
+          const itemMsg = `Hola! Quisiera hacer el siguiente pedido: ${item.data.name} ($${item.data.price})`;
+          const itemWhatsappUrl = `https://wa.me/${whatsappPhone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(itemMsg)}`;
+
+          return (
+            <Card
+              class={`menu-card ${item.data.category === categories[0] ? '' : 'hidden'}`}
+              data-category={item.data.category}
+              role="listitem"
+            >
+              {item.data.featured && (
+                <Badge variant="primary" class="card-badge">Más Vendido</Badge>
+              )}
+
+              {item.data.image && (
+                <div class="card-image-wrapper">
+                  <Image
+                    src={item.data.image}
+                    alt={item.data.description || item.data.name}
+                    class="card-image"
+                    loading="lazy"
+                    width={180}
+                    height={180}
+                  />
+                </div>
+              )}
+
+              <div class="card-info">
+                <div class="card-title-desc">
+                  <h3 class="card-title">{item.data.name}</h3>
+                  {item.data.description && <p class="card-desc">{item.data.description}</p>}
+                </div>
+
+                <div class="card-action">
+                  <span class="card-price">${item.data.price.toLocaleString('es-CL')}</span>
+                  <Button
+                    href={itemWhatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="secondary"
+                    class="menu-item-btn"
+                    aria-label={`Añadir ${item.data.name} a mi pedido de WhatsApp`}
+                    data-id={item.id}
+                    data-name={item.data.name}
+                    data-category={item.data.category}
+                    data-price={item.data.price}
+                    data-image={item.data.image ? item.data.image.src : ''}
+                  >
+                    <span class="btn-text">+Agregar</span>
+                    <span class="btn-icon">+</span>
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      <!-- Panel de Arma tu Roll -->
+      <div class="custom-roll-builder-container hidden" id="custom-roll-builder-panel">
+        <div class="builder-card">
+          <div class="builder-header">
+            <h3 class="builder-title">Arma tu Roll</h3>
+            <p class="builder-subtitle">Arma un roll a tu gusto seleccionando: 1 Envoltura, 3 Rellenos y 1 Topping.</p>
+          </div>
+
+          <form id="roll-builder-form" class="builder-form">
+            <!-- Paso 1: Envoltura -->
+            <div class="builder-step">
+              <h4 class="step-title">1. Elige una Envoltura</h4>
+              <div class="options-grid" data-type="envoltura">
+                {['Frito en panko', 'Sésamo', 'Queso Crema', 'Nori', 'Palta', 'Tempura', 'Salmón'].map(opt => (
+                  <label class="option-pill">
+                    <input type="radio" name="envoltura" value={opt} required />
+                    <span class="pill-label">{opt}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <!-- Paso 2: Rellenos -->
+            <div class="builder-step">
+              <h4 class="step-title">2. Selecciona 3 Rellenos</h4>
+              <div class="options-grid" data-type="relleno">
+                {['Pollo apanado', 'Kanikama', 'Queso Crema', 'Morrón rojo', 'Choclo', 'Pepino', 'Salmón', 'Cebollín', 'Camarón apanado', 'Champiñón', 'Palta'].map(opt => (
+                  <label class="option-pill">
+                    <input type="checkbox" name="relleno" value={opt} />
+                    <span class="pill-label">{opt}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <!-- Paso 3: Topping -->
+            <div class="builder-step">
+              <h4 class="step-title">3. Elige un Topping</h4>
+              <div class="options-grid" data-type="topping">
+                {['Merkén', 'Cebolla frita', 'Almendras', 'Salsa de frambuesa', 'Sésamo', 'Salsa acevichada'].map(opt => (
+                  <label class="option-pill">
+                    <input type="radio" name="topping" value={opt} required />
+                    <span class="pill-label">{opt}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <!-- Footer del Formulario -->
+            <div class="builder-footer">
+              <div class="builder-price-box">
+                <span class="builder-price-label">Precio del roll:</span>
+                <span class="builder-price-value">$6.900</span>
+              </div>
+              <Button type="submit" variant="secondary" class="menu-item-btn builder-submit-btn" id="builder-add-btn" disabled>
+                <span class="btn-text">+Agregar</span>
+                <span class="btn-icon">+</span>
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { trackMenuClick } from '../../lib/analytics';
+
+  const setupMenu = () => {
+    const wrapper = document.querySelector('.pills-wrapper');
+    const pills = document.querySelectorAll('.pill');
+    const cards = document.querySelectorAll('.menu-card');
+    let isDragging = false;
+    let startX = 0;
+    let scrollStart = 0;
+    let draggedDistance = 0;
+
+    if (wrapper) {
+      wrapper.addEventListener('mousedown', (e) => {
+        const me = e as MouseEvent;
+        isDragging = true;
+        startX = me.clientX;
+        scrollStart = wrapper.scrollLeft;
+        draggedDistance = 0;
+        wrapper.classList.add('grabbing');
+        e.preventDefault();
+      });
+
+      wrapper.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const me = e as MouseEvent;
+        const x = me.clientX;
+        const delta = x - startX;
+        draggedDistance += Math.abs(delta);
+        wrapper.scrollLeft = scrollStart - delta;
+        startX = x;
+        scrollStart = wrapper.scrollLeft;
+      });
+
+      const stopDrag = () => {
+        isDragging = false;
+        wrapper.classList.remove('grabbing');
+      };
+
+      wrapper.addEventListener('mouseup', stopDrag);
+      wrapper.addEventListener('mouseleave', stopDrag);
+    }
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        if (draggedDistance > 8) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        pills.forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-selected', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+
+        const selectedCategory = pill.getAttribute('data-category');
+
+        // Alternar visor de grilla de platos vs constructor de rolls
+        const builderPanel = document.getElementById('custom-roll-builder-panel');
+        const grid = document.getElementById('menu-grid');
+
+        if (selectedCategory === 'arma-tu-roll') {
+          if (builderPanel) builderPanel.classList.remove('hidden');
+          if (grid) grid.classList.add('hidden');
+        } else {
+          if (builderPanel) builderPanel.classList.add('hidden');
+          if (grid) grid.classList.remove('hidden');
+        }
+
+        cards.forEach(card => {
+          const cardEl = card as HTMLElement;
+          const cardCategory = cardEl.getAttribute('data-category');
+          const isVisible = selectedCategory === 'all' || cardCategory === selectedCategory;
+
+          cardEl.classList.toggle('hidden', !isVisible);
+        });
+      });
+    });
+
+    const buttons = document.querySelectorAll('.menu-item-btn');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const name = button.getAttribute('data-name') || '';
+        const category = button.getAttribute('data-category') || '';
+        const price = parseFloat(button.getAttribute('data-price') || '0');
+        trackMenuClick(name, category, price);
+      });
+    });
+
+    // Lógica interactiva del Constructor de Roll
+    const builderForm = document.getElementById('roll-builder-form') as HTMLFormElement;
+    if (builderForm) {
+      const rellenoInputs = builderForm.querySelectorAll('input[name="relleno"]') as NodeListOf<HTMLInputElement>;
+      const builderAddBtn = document.getElementById('builder-add-btn') as HTMLButtonElement;
+
+      const getSelectedRellenos = () => {
+        return Array.from(rellenoInputs).filter(input => input.checked);
+      };
+
+      const updateBuilderState = () => {
+        const selectedEnvoltura = builderForm.querySelector('input[name="envoltura"]:checked') as HTMLInputElement;
+        const selectedRellenos = getSelectedRellenos();
+        const selectedTopping = builderForm.querySelector('input[name="topping"]:checked') as HTMLInputElement;
+
+        // Límite a 3 rellenos máximo
+        rellenoInputs.forEach(input => {
+          if (!input.checked) {
+            input.disabled = selectedRellenos.length >= 3;
+          }
+        });
+
+        // Activar o desactivar botón
+        const isComplete = selectedEnvoltura && selectedRellenos.length === 3 && selectedTopping;
+        if (builderAddBtn) {
+          builderAddBtn.disabled = !isComplete;
+
+          // Propagar dinámicamente los datos al botón para que el CartDrawer los intercepte al hacer click
+          if (isComplete) {
+            const envolturaVal = selectedEnvoltura.value;
+            const toppingVal = selectedTopping.value;
+            const rellenosList = selectedRellenos.map(i => i.value);
+            const sortedRellenos = [...rellenosList].sort();
+
+            const ingredientsSlug = [
+              envolturaVal,
+              toppingVal,
+              ...sortedRellenos
+            ].join('-').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+            builderAddBtn.setAttribute('data-id', `custom-${ingredientsSlug}`);
+            builderAddBtn.setAttribute('data-name', 'Roll Personalizado');
+            builderAddBtn.setAttribute('data-price', '6900');
+            builderAddBtn.setAttribute('data-category', 'arma-tu-roll');
+            builderAddBtn.setAttribute('data-image', 'https://picsum.photos/seed/customroll/600/450');
+            builderAddBtn.setAttribute('data-is-custom', 'true');
+            builderAddBtn.setAttribute('data-envoltura', envolturaVal);
+            builderAddBtn.setAttribute('data-rellenos', JSON.stringify(rellenosList));
+            builderAddBtn.setAttribute('data-topping', toppingVal);
+          } else {
+            builderAddBtn.removeAttribute('data-id');
+            builderAddBtn.removeAttribute('data-name');
+            builderAddBtn.removeAttribute('data-price');
+            builderAddBtn.removeAttribute('data-category');
+            builderAddBtn.removeAttribute('data-image');
+            builderAddBtn.removeAttribute('data-is-custom');
+            builderAddBtn.removeAttribute('data-envoltura');
+            builderAddBtn.removeAttribute('data-rellenos');
+            builderAddBtn.removeAttribute('data-topping');
+          }
+        }
+      };
+
+      builderForm.addEventListener('change', updateBuilderState);
+
+      // Evento de submit
+      builderForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Limpiar formulario tras añadir
+        builderForm.reset();
+        updateBuilderState();
+      });
+
+      // Inicializar estado del constructor
+      updateBuilderState();
+    }
+  };
+
+  setupMenu();
+  document.addEventListener('astro:after-swap', setupMenu);
+</script>
+
+<style>
+  .menu-section {
+    background-color: var(--color-bg);
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-card-border);
+  }
+
+  .menu-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .menu-title {
+    font-size: 2.2rem;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    position: relative;
+    display: inline-block;
+    -webkit-text-stroke: 0.4px currentColor;
+  }
+
+  .menu-title::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 25%;
+    right: 25%;
+    height: 3px;
+    background-color: var(--color-primary);
+  }
+
+  .menu-lead {
+    font-size: 1.2rem;
+    max-width: 60ch;
+    margin: 1.25rem auto 0 auto;
+    color: var(--color-text-muted);
+  }
+
+  .pills-wrapper {
+    width: 100%;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-primary) var(--color-card-bg);
+    -ms-overflow-style: auto;
+    scroll-snap-type: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+    position: relative;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .pills-wrapper.grabbing {
+    cursor: grabbing;
+  }
+
+  .pills-wrapper::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .pills-wrapper::-webkit-scrollbar-track {
+    background: var(--color-card-bg);
+    border-radius: 4px;
+    border: 1px solid var(--color-card-border);
+  }
+
+  .pills-wrapper::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+    border: 2px solid var(--color-card-bg);
+  }
+
+  .pills-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary);
+  }
+
+  .pills-track {
+    display: flex;
+    gap: 0.5rem;
+    width: max-content;
+    padding: 0.25rem 0;
+  }
+
+  .pill {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px solid var(--color-card-border);
+    padding: 0.55rem 1.25rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+
+  .pill:hover {
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+  }
+
+  .pill.active {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    border-color: var(--color-primary);
+  }
+
+  .menu-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .menu-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .menu-card.hidden {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .custom-roll-builder-container.hidden {
+    display: none;
+  }
+
+  .menu-grid.hidden {
+    display: none;
+  }
+
+  :global(.menu-card) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem !important;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 5;
+  }
+
+  .card-image-wrapper {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--color-card-border);
+    background-color: var(--color-black);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-info {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr auto; /* La sección 2 toma el espacio libre y la sección 3 su ancho mínimo */
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .card-title-desc {
+    min-width: 0; /* Necesario para truncamiento correcto */
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.2rem;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .card-price {
+    font-family: var(--font-serif);
+    font-size: 1.25rem; /* Aumentado para compensar el espacio y destacar */
+    color: var(--color-secondary);
+    line-height: 1;
+    text-align: right;
+    /* Precios con Noto Serif JP Bold (700) */
+  }
+
+  :global(.menu-item-btn) {
+    min-height: 26px !important; /* Alto súper compacto para móvil */
+    height: 26px !important;
+    min-width: auto;
+    padding: 0 0.5rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+  }
+
+  .btn-text {
+    display: inline-block;
+    font-size: 0.65rem; /* Proporcional al alto reducido */
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+  .btn-icon {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .pills-wrapper {
+      scrollbar-width: thin;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    :global(.menu-card) {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0 !important;
+      height: 100%;
+      cursor: default;
+    }
+
+    .card-badge {
+      top: 1rem;
+      left: 1rem;
+    }
+
+    .card-image-wrapper {
+      width: 100%;
+      height: 200px;
+      border-radius: 4px 4px 0 0;
+      border: none;
+      border-bottom: 1px solid var(--color-card-border);
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+      gap: 1.25rem;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .card-title-desc {
+      max-width: 100%;
+      flex: none;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+    }
+
+    .card-action {
+      justify-content: space-between;
+      width: 100%;
+      border-top: 1px dashed var(--color-card-border);
+      padding-top: 1rem;
+      flex: none;
+      max-width: 100%;
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-text {
+      display: inline-block;
+      font-size: 0.85rem;
+    }
+
+    :global(.menu-item-btn) {
+      padding: 0.75rem 1.25rem !important;
+      min-height: 44px !important;
+      height: auto !important;
+    }
+  }
+
+  /* Estilos del Constructor de Roll Personalizado */
+  .custom-roll-builder-container {
+    width: 100%;
+    margin-top: 1rem;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .builder-card {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .builder-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--color-card-border);
+    padding-bottom: 1rem;
+  }
+
+  .builder-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--color-text);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .builder-subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .builder-step {
+    margin-bottom: 1.75rem;
+  }
+
+  .step-title {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .step-required {
+    font-size: 0.8rem;
+    color: var(--color-primary);
+    font-weight: normal;
+  }
+
+  #rellenos-counter {
+    color: var(--color-secondary);
+    font-weight: 700;
+  }
+
+  .options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .option-pill {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .option-pill input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .pill-label {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background-color: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--color-card-border);
+    border-radius: 4px;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .option-pill:hover .pill-label {
+    border-color: var(--color-secondary);
+    color: var(--color-text);
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  /* Estado Seleccionado */
+  .option-pill input:checked + .pill-label {
+    background-color: rgba(244, 208, 63, 0.08); /* Tinte del amarillo corporativo */
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(244, 208, 63, 0.15);
+  }
+
+  /* Estado Deshabilitado (para límite de rellenos) */
+  .option-pill input:disabled + .pill-label {
+    opacity: 0.25;
+    cursor: not-allowed;
+    border-color: var(--color-card-border);
+    color: var(--color-text-muted);
+    background-color: transparent;
+  }
+
+  /* Footer del Formulario */
+  .builder-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed var(--color-card-border);
+    padding-top: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .builder-price-box {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .builder-price-label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .builder-price-value {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+  }
+
+
+  /* Estilos de deshabilitado para el botón Agregar */
+  :global(.menu-item-btn):disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--color-card-border) !important;
+    color: var(--color-text-muted) !important;
+    box-shadow: none !important;
+  }
+
+  @media (min-width: 768px) {
+    .builder-card {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .builder-title {
+      font-size: 1.6rem;
+    }
+
+    .options-grid {
+      gap: 0.6rem;
+    }
+
+    .pill-label {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+    }
+
+  }
+
+  @media (min-width: 1024px) {
+    .menu-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

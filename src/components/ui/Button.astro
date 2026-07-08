@@ -1,0 +1,90 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'outline';
+  href?: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const { variant = 'primary', href, class: className = '', ...rest } = Astro.props;
+
+const baseClass = `btn btn-${variant} ${className}`;
+const isLink = typeof href === 'string' && href.length > 0;
+
+const filteredRest: Record<string, any> = {};
+if (isLink) {
+  for (const [key, value] of Object.entries(rest)) {
+    if (key !== 'type' && key !== 'disabled') {
+      filteredRest[key] = value;
+    }
+  }
+} else {
+  Object.assign(filteredRest, rest);
+}
+---
+{isLink ? (
+  <a href={href} class={baseClass} {...filteredRest}>
+    <slot />
+  </a>
+) : (
+  <button class={baseClass} {...filteredRest}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
+    text-decoration: none;
+    min-height: 48px;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-black);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-black);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-text);
+    color: var(--color-black);
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    color: var(--color-text);
+    border: 2px solid var(--color-card-border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+</style>

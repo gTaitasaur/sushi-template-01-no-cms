@@ -1,0 +1,9 @@
+{
+  "id": "teriyaki-extra",
+  "name": "Teriyaki extra",
+  "description": "Sobre de salsa teriyaki.",
+  "price": 500,
+  "category": "extras",
+  "image": "../../assets/images/menu/extras.webp",
+  "featured": false
+}

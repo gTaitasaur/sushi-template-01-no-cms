@@ -1,0 +1,204 @@
+---
+import { Image } from 'astro:assets';
+import galeria1 from '../../assets/images/gallery/hero1.webp';
+import galeria2 from '../../assets/images/gallery/hero2.webp';
+import galeria3 from '../../assets/images/gallery/hero3.webp';
+import galeria4 from '../../assets/images/gallery/hero4.webp';
+---
+
+<section id="gallery" class="gallery-section reveal reveal-delay-2">
+  <div class="container">
+    <div class="gallery-header">
+      <h2 class="gallery-title">Nuestros Clientes</h2>
+      <p class="gallery-lead">Si nuestros clientes son felices, nosotros lo somos aun mas!</p>
+    </div>
+    
+    <div class="gallery-grid">
+      <div class="gallery-item item-1 reveal reveal-delay-1">
+        <Image 
+          src={galeria1} 
+          alt="Clientes disfrutando en la barra de madera bajo linternas rojas japonesas" 
+          class="gallery-img" 
+          loading="lazy"
+          width={900}
+          height={563}
+        />
+        <div class="gallery-caption">Ambiente Izakaya Callejero</div>
+      </div>
+      
+      <div class="gallery-item item-2 reveal reveal-delay-2">
+        <Image 
+          src={galeria2} 
+          alt="Chef de sushi fileteando salmon fresco con precision" 
+          class="gallery-img" 
+          loading="lazy"
+          width={400}
+          height={533}
+        />
+        <div class="gallery-caption">Precision y Tradicion</div>
+      </div>
+
+      <div class="gallery-item item-3 reveal reveal-delay-3">
+        <Image 
+          src={galeria3} 
+          alt="Bocado de Nigiri de salmon fresco sobre plato de pizarra oscura" 
+          class="gallery-img" 
+          loading="lazy"
+          width={400}
+          height={533}
+        />
+        <div class="gallery-caption">Nigiri Shake Premium</div>
+      </div>
+
+      <div class="gallery-item item-4 reveal reveal-delay-2">
+        <Image 
+          src={galeria4} 
+          alt="Mesa de comida japonesa variada con gyoza, edamame y rolls" 
+          class="gallery-img" 
+          loading="lazy"
+          width={900}
+          height={563}
+        />
+        <div class="gallery-caption">Sabor Compartido</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-section {
+    background-color: var(--color-bg);
+    padding: 5rem 0;
+    border-top: 1px solid var(--color-card-border);
+  }
+
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .gallery-title {
+    font-size: 2.2rem;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+    -webkit-text-stroke: 0.4px currentColor;
+  }
+
+  .gallery-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 25%;
+    right: 25%;
+    height: 3px;
+    background-color: var(--color-primary);
+  }
+
+  .gallery-lead {
+    font-size: 1.2rem;
+    max-width: 60ch;
+    margin: 1.5rem auto 0 auto;
+    color: var(--color-text-muted);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .item-1,
+  .item-4 {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+  }
+
+  .item-2,
+  .item-3 {
+    aspect-ratio: 3 / 4;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid var(--color-card-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    background-color: var(--color-black);
+    transition: border-color 0.3s ease;
+  }
+
+  .gallery-item:hover {
+    border-color: var(--color-secondary);
+  }
+
+  .gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .gallery-item:hover .gallery-img {
+    transform: scale(1.06);
+  }
+
+  .gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    color: var(--color-text);
+    padding: 1.5rem 1rem 1rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
+
+  .gallery-item:hover .gallery-caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (min-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .item-1 {
+      grid-column: 1 / 4;
+      grid-row: 1 / 2;
+      aspect-ratio: 16 / 10;
+    }
+
+    .item-2 {
+      grid-column: 4 / 5;
+      grid-row: 1 / 2;
+      aspect-ratio: 3 / 4;
+    }
+
+    .item-3 {
+      grid-column: 1 / 2;
+      grid-row: 2 / 3;
+      aspect-ratio: 3 / 4;
+    }
+
+    .item-4 {
+      grid-column: 2 / 5;
+      grid-row: 2 / 3;
+      aspect-ratio: 16 / 10;
+    }
+  }
+</style>
+

@@ -1,0 +1,9 @@
+{
+  "id": "promo-60",
+  "name": "Promo 60",
+  "description": "60 piezas: 10 Fritos (Pollo, queso crema, cebollín) • 10 Fritos (Kanikama, queso crema, cebollín) • 10 Sésamo (Pollo, queso crema, palta) • 10 Queso Crema (Camarón, queso crema, palta) • 10 Palta (Camarón, queso crema, palta) • 10 Nori (Pollo, queso crema, champiñón).",
+  "price": 25990,
+  "category": "promociones",
+  "image": "../../assets/images/menu/promo-60.webp",
+  "featured": false
+}

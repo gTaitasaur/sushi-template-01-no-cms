@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Página no encontrada — 404" 
+  description="La página que buscas no existe. Serás redirigido al inicio en unos instantes."
+>
+  <!-- Astro colocará automáticamente esta etiqueta meta en el <head> de la página -->
+  <meta http-equiv="refresh" content="5;url=/" />
+
+  <section class="error-404-section">
+    <h1 class="error-code">404</h1>
+    <h2 class="error-title">No Encontrado</h2>
+    <p class="error-desc">
+      El enlace que seguiste podría estar roto, o la página podría haber sido eliminada.
+    </p>
+    <p class="error-redirect">
+      Serás redirigido a la página de inicio automáticamente en unos segundos...
+    </p>
+    <a href="/" class="error-btn">Volver al Inicio Ahora</a>
+  </section>
+  <style>
+    .error-404-section {
+      text-align: center;
+      padding: 6rem 2rem;
+      background-color: var(--color-bg);
+      min-height: calc(100vh - 72px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .error-code {
+      font-size: 5rem;
+      color: var(--color-primary);
+      margin: 0;
+      line-height: 1;
+    }
+    .error-title {
+      font-size: 2rem;
+      color: var(--color-text);
+      margin: 0;
+    }
+    .error-desc {
+      font-size: 1.1rem;
+      color: var(--color-text-muted);
+      max-width: 40ch;
+      margin: 0.5rem 0;
+    }
+    .error-redirect {
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+      opacity: 0.7;
+    }
+    .error-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: 4px;
+      background-color: var(--color-primary);
+      color: var(--color-text);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      margin-top: 1rem;
+    }
+    .error-btn:hover {
+      background-color: var(--color-secondary);
+      color: var(--color-black);
+      transform: scale(1.02);
+    }
+  </style>
+</BaseLayout>

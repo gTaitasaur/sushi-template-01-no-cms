@@ -1,0 +1,9 @@
+{
+  "id": "soya-extra",
+  "name": "Soya extra",
+  "description": "Sobre de salsa de soya.",
+  "price": 500,
+  "category": "extras",
+  "image": "../../assets/images/menu/extras.webp",
+  "featured": false
+}

@@ -1,0 +1,9 @@
+{
+  "id": "sushi-burguer-pollo",
+  "name": "Sushi Burguer de Pollo",
+  "description": "La combinacion perfecta entre los sabores de Japón y la modernidad actual. rellena de crujiente pollo apañado, acompañado de palta, queso crema y cebollin.",
+  "price": 8990,
+  "category": "sushi-burguer",
+  "image": "../../assets/images/menu/sushiburguer.webp",
+  "featured": false
+}

@@ -1,0 +1,415 @@
+---
+import Button from '../ui/Button.astro';
+---
+<!-- Componente de Detalle de Producto en Móviles (Bottom Sheet) -->
+<div class="detail-overlay" id="detail-overlay" aria-hidden="true"></div>
+
+<div 
+  class="detail-drawer" 
+  id="detail-drawer" 
+  role="dialog" 
+  aria-modal="true" 
+  aria-hidden="true"
+  aria-labelledby="detail-product-name"
+>
+  <!-- Cabecera -->
+  <div class="detail-drawer-header">
+    <span class="detail-header-label">Detalle del plato</span>
+    <button class="detail-drawer-close" id="detail-close-btn" aria-label="Cerrar detalles">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Cuerpo -->
+  <div class="detail-drawer-body">
+    <div class="detail-img-wrapper">
+      <img id="detail-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" alt="Cargando imagen..." class="detail-img" />
+    </div>
+
+    <div class="detail-info">
+      <span class="detail-category" id="detail-category">Categoría</span>
+      <h3 class="detail-product-name" id="detail-product-name">Nombre del Producto</h3>
+      <span class="detail-price" id="detail-price">$0</span>
+
+      <div class="detail-divider"></div>
+
+      <div class="detail-block">
+        <h4 class="detail-block-title">Detalles</h4>
+        <p class="detail-desc" id="detail-desc">Cargando descripción...</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer con Botón Agregar -->
+  <div class="detail-drawer-footer">
+    <Button variant="secondary" class="menu-item-btn detail-add-btn" id="detail-add-btn">
+      <span class="btn-text">+Agregar</span>
+    </Button>
+  </div>
+</div>
+
+<style>
+  /* Fondo Oscuro / Overlay */
+  .detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 130; /* Justo debajo del carrito (140) */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global(body.detail-open) .detail-overlay {
+    backdrop-filter: blur(4px);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Contenedor Principal (Bottom Sheet Móvil) */
+  .detail-drawer {
+    position: fixed;
+    background-color: var(--color-card-bg);
+    border-top: 1px solid var(--color-card-border);
+    border-radius: 12px 12px 0 0;
+    z-index: 135;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 70vh;
+    max-height: 70vh;
+    transform: translateY(100%);
+    overscroll-behavior: contain;
+  }
+
+  :global(body.detail-open) .detail-drawer {
+    transform: translateY(0);
+  }
+
+  /* Ocultar en Escritorio (Solicitud del usuario) */
+  @media (min-width: 768px) {
+    .detail-overlay,
+    .detail-drawer {
+      display: none !important;
+    }
+  }
+
+  /* Cabecera */
+  .detail-drawer-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--color-card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .detail-header-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .detail-drawer-close {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.2s, background-color 0.2s;
+  }
+
+  .detail-drawer-close:hover {
+    color: var(--color-text);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .detail-drawer-close:focus-visible {
+    outline: 2px solid var(--color-secondary);
+  }
+
+  /* Cuerpo */
+  .detail-drawer-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* Imagen */
+  .detail-img-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--color-card-border);
+    background-color: var(--color-black);
+  }
+
+  .detail-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Información */
+  .detail-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-category {
+    font-size: 0.75rem;
+    color: var(--color-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .detail-product-name {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--color-text);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .detail-price {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+  }
+
+  .detail-divider {
+    height: 1px;
+    border-top: 1px dashed var(--color-card-border);
+    margin: 1rem 0;
+  }
+
+  .detail-block {
+    margin-bottom: 1.25rem;
+  }
+
+  .detail-block-title {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .detail-desc {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* Footer */
+  .detail-drawer-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--color-card-border);
+    background-color: var(--color-card-bg);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .detail-add-btn {
+    width: 100%;
+    min-height: 44px !important;
+    font-size: 0.9rem !important;
+    justify-content: center;
+  }
+</style>
+
+<!-- Lógica del Detalle de Producto -->
+<script>
+  const PLACEHOLDER_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23241c1a'/><path d='M35 45a5 5 0 100-10 5 5 0 000 10zM25 70h50L60 50 45 65l-10-10z' fill='%233a2f2b'/></svg>";
+  let lastActiveCardBtn: HTMLElement | null = null;
+
+  const overlay = document.getElementById('detail-overlay');
+  const drawer = document.getElementById('detail-drawer');
+  const closeBtn = document.getElementById('detail-close-btn');
+  const addBtn = document.getElementById('detail-add-btn');
+
+  const detailImg = document.getElementById('detail-img') as HTMLImageElement;
+  const detailCategory = document.getElementById('detail-category');
+  const detailProductName = document.getElementById('detail-product-name');
+  const detailPrice = document.getElementById('detail-price');
+  const detailDesc = document.getElementById('detail-desc');
+
+  // Inicialización
+  function initProductDetails() {
+    if (closeBtn) closeBtn.addEventListener('click', closeDetail);
+    if (overlay) overlay.addEventListener('click', closeDetail);
+    document.addEventListener('keydown', handleKeydowns);
+
+    if (detailImg) {
+      detailImg.addEventListener('error', () => {
+        detailImg.src = PLACEHOLDER_IMG;
+      });
+    }
+
+    // Cerrar detalle al hacer clic en el botón de agregar
+    if (addBtn) {
+      addBtn.addEventListener('click', () => {
+        closeDetail();
+      });
+    }
+
+    // Interceptar clics en tarjetas de menú (sólo en móviles)
+    document.body.addEventListener('click', (e) => {
+      // Ignorar si no estamos en vista móvil
+      if (window.innerWidth >= 768) return;
+
+      const card = (e.target as HTMLElement).closest('.menu-card');
+      const directAddBtn = (e.target as HTMLElement).closest('.menu-item-btn');
+
+      // Si hicieron click en la tarjeta, pero NO en el botón de agregar directo
+      if (card && !directAddBtn) {
+        e.preventDefault();
+        
+        // Buscar el botón agregar interno de la tarjeta para copiar sus datos
+        const cardBtn = card.querySelector('.menu-item-btn');
+        if (!cardBtn) return;
+
+        lastActiveCardBtn = cardBtn as HTMLElement;
+
+        const id = cardBtn.getAttribute('data-id');
+        const name = cardBtn.getAttribute('data-name');
+        const price = cardBtn.getAttribute('data-price');
+        const image = cardBtn.getAttribute('data-image');
+        const category = cardBtn.getAttribute('data-category');
+        
+        // Buscar descripción
+        const descEl = card.querySelector('.card-desc');
+        const description = descEl ? descEl.textContent : '';
+
+        if (id && name && price) {
+          openDetail({ id, name, price, image: image || null, category: category || '', description: description || '' });
+        }
+      }
+    });
+  }
+
+  // Abrir Bottom Sheet de Detalle
+  function openDetail(data: {id: string, name: string, price: string, image: string | null, category: string, description: string | null}) {
+    if (!drawer) return;
+
+    // Poblar DOM
+    if (detailProductName) detailProductName.textContent = data.name;
+    if (detailCategory) detailCategory.textContent = formatCategoryName(data.category);
+    if (detailPrice) detailPrice.textContent = `$${parseInt(data.price, 10).toLocaleString('es-CL')}`;
+    if (detailDesc) detailDesc.textContent = data.description || 'Sin descripción disponible.';
+    
+    if (detailImg) {
+      detailImg.src = data.image || PLACEHOLDER_IMG;
+      detailImg.alt = data.name;
+    }
+
+    // Poblar botón Agregar con atributos necesarios
+    if (addBtn) {
+      addBtn.setAttribute('data-id', data.id);
+      addBtn.setAttribute('data-name', data.name);
+      addBtn.setAttribute('data-price', data.price);
+      addBtn.setAttribute('data-image', data.image || '');
+      addBtn.setAttribute('data-category', data.category);
+    }
+
+
+    // Mostrar modal
+    document.body.classList.add('detail-open');
+    drawer.setAttribute('aria-hidden', 'false');
+
+    // Foco en cerrar
+    setTimeout(() => {
+      if (closeBtn) closeBtn.focus();
+    }, 100);
+  }
+
+  // Cerrar Drawer
+  function closeDetail() {
+    document.body.classList.remove('detail-open');
+    if (drawer) drawer.setAttribute('aria-hidden', 'true');
+    
+    // Restaurar foco al botón de agregar de la tarjeta
+    if (lastActiveCardBtn) {
+      lastActiveCardBtn.focus();
+    }
+  }
+
+  // Manejo de teclado (Escape y Tab Trap)
+  function handleKeydowns(e: KeyboardEvent) {
+    if (!document.body.classList.contains('detail-open')) return;
+
+    if (e.key === 'Escape') {
+      closeDetail();
+      return;
+    }
+
+    if (e.key === 'Tab') {
+      if (!drawer) return;
+      const focusables = drawer.querySelectorAll('button:not(:disabled), [tabindex="0"]');
+      if (focusables.length === 0) return;
+
+      const first = focusables[0] as HTMLElement;
+      const last = focusables[focusables.length - 1] as HTMLElement;
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
+        }
+      }
+    }
+  }
+
+  // Helpers auxiliares
+  function formatCategoryName(slug: string): string {
+    const map = {
+      'promociones': 'Promociones',
+      'arma-tu-roll': 'Arma tu Roll',
+      'handrolls': 'Handrolls',
+      'sushi-bowl': 'Sushi Bowls',
+      'sushi-burguer': 'Sushi Burger',
+      'sushipleto': 'Sushipletos',
+      'rico-picoteo': 'Rico Picoteo',
+      'bebestibles': 'Bebestibles',
+      'extras': 'Extras'
+    };
+    return (map as Record<string, string>)[slug] || slug;
+  }
+
+
+
+  document.addEventListener('DOMContentLoaded', initProductDetails);
+  document.addEventListener('astro:page-load', initProductDetails);
+</script>

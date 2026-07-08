@@ -1,0 +1,9 @@
+{
+  "id": "sushi-burguer-vegetariano",
+  "name": "Sushi Burguer Vegetariano",
+  "description": "La combinacion perfecta entre los sabores de Japón y la modernidad actual. rellena de crujiente croqueta de soya, acompañado de palta, queso crema, pepino y cebollin.",
+  "price": 8990,
+  "category": "sushi-burguer",
+  "image": "../../assets/images/menu/sushiburguer.webp",
+  "featured": false
+}

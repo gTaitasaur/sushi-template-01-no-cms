@@ -1,0 +1,73 @@
+---
+---
+<nav class="main-nav">
+  <ul class="nav-list">
+    <li><a href="#hero" class="nav-link">Inicio</a></li>
+    <li><a href="#menu" class="nav-link">Carta</a></li>
+    <li><a href="#contact" class="nav-link">Local</a></li>
+  </ul>
+</nav>
+
+<style>
+  .main-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-link {
+    font-family: var(--font-serif);
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    padding: 0.5rem 0.75rem;
+    position: relative;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 2px;
+    background-color: var(--color-primary);
+    transform: scaleX(0);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-link:hover {
+    color: var(--color-secondary);
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    background-color: var(--color-secondary);
+  }
+
+  @media (max-width: 600px) {
+    .nav-list {
+      gap: 0.5rem;
+    }
+    
+    .nav-link {
+      font-size: 0.9rem;
+      padding: 0.4rem 0.5rem;
+    }
+    
+    .nav-link::after {
+      left: 0.5rem;
+      right: 0.5rem;
+    }
+  }
+</style>
+

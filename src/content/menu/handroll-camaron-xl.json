@@ -1,0 +1,9 @@
+{
+  "id": "handroll-camaron-xl",
+  "name": "Handroll Camarón XL",
+  "description": "Relleno de camarón apanado, queso crema y cebollín.",
+  "price": 4200,
+  "category": "handrolls",
+  "image": "../../assets/images/menu/arma-tu-roll.webp",
+  "featured": false
+}

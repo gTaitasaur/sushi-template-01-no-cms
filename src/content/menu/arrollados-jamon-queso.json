@@ -1,0 +1,9 @@
+{
+  "id": "arrollados-jamon-queso",
+  "name": "Arrollados Jamón y Queso",
+  "description": "4 Exquisitos arrollados jamón y queso con salsa.",
+  "price": 4500,
+  "category": "rico-picoteo",
+  "image": "../../assets/images/menu/ricopicoteo.webp",
+  "featured": false
+}

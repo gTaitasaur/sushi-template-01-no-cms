@@ -1,0 +1,186 @@
+---
+import Nav from './Nav.astro';
+---
+<header class="site-header">
+  <div class="container header-container">
+    <a href="#hero" class="logo-link" aria-label="Volver al inicio">
+      <div class="logo-aura">
+        <img 
+          src="/logo.png" 
+          alt="New Roll Sushi Logo" 
+          class="logo-img" 
+          width="150" 
+          height="50"
+        />
+      </div>
+      <div class="logo-text">
+        <span class="text-line-1">New Roll</span>
+        <span class="text-line-2">Sushi</span>
+      </div>
+    </a>
+    <div class="header-right">
+      <Nav />
+      <button class="header-cart-btn" id="cart-toggle-btn" aria-label="Ver pedido">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cart-icon-svg">
+          <circle cx="8" cy="21" r="1"></circle>
+          <circle cx="19" cy="21" r="1"></circle>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+        </svg>
+        <span class="header-cart-badge" id="cart-badge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-card-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 72px;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .header-cart-btn {
+    background: none;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 4px;
+    transition: color 0.2s, background-color 0.2s;
+  }
+
+  .header-cart-btn:hover {
+    color: var(--color-secondary);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .header-cart-btn:focus-visible {
+    outline: 2px solid var(--color-secondary);
+  }
+
+  .header-cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    font-size: 0.65rem;
+    font-weight: 800;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    line-height: 1;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .header-cart-badge.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .logo-aura {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 8px 2px rgba(244, 208, 63, 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .logo-link:hover .logo-aura {
+    box-shadow: 0 0 14px 4px rgba(244, 208, 63, 0.35);
+  }
+
+  .logo-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .logo-link:hover .logo-img {
+    transform: scale(1.06);
+  }
+
+  .logo-text {
+    display: none; /* Oculto en móvil */
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 0.75rem;
+    line-height: 1.1;
+    font-family: var(--font-serif);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .text-line-1 {
+    color: var(--color-primary); /* Rojo */
+    font-size: 1.05rem;
+    -webkit-text-stroke: 0.6px var(--color-primary);
+  }
+
+  .text-line-2 {
+    color: var(--color-secondary); /* Amarillo */
+    font-size: 0.9rem;
+    -webkit-text-stroke: 0.6px var(--color-secondary);
+  }
+
+  @media (min-width: 768px) {
+    .logo-text {
+      display: flex; /* Visible en tablet horizontal o superior */
+    }
+  }
+
+  @media (max-width: 600px) {
+    .site-header {
+      height: 64px;
+    }
+    .logo-img {
+      width: 42px;
+      height: 42px;
+    }
+    .header-right {
+      gap: 0.5rem;
+    }
+  }
+</style>
+

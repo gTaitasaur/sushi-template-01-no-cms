@@ -1,0 +1,9 @@
+{
+  "id": "sushi-bowl-pollo",
+  "name": "Sushi Bowl de Pollo",
+  "description": "Deliciosa combinación de arroz, pollo apanado, palta, queso crema, kanikama y choclo, ideal para comer donde quieras.",
+  "price": 8990,
+  "category": "sushi-bowl",
+  "image": "../../assets/images/menu/sushibowl.webp",
+  "featured": false
+}

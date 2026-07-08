@@ -1,0 +1,9 @@
+{
+  "id": "sushipleto-pollo",
+  "name": "Sushipleto de Pollo",
+  "description": "Relleno de pollo, queso crema y cebollin, partido como pan de completo, donde se agrega tomate, palta y mayonesa.",
+  "price": 6500,
+  "category": "sushipleto",
+  "image": "../../assets/images/menu/sushipleto.webp",
+  "featured": false
+}

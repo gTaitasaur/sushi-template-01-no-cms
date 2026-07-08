@@ -1,0 +1,508 @@
+---
+import { Image, getImage } from 'astro:assets';
+import heroFeatured from '../../assets/images/hero/hero-featured.jpg';
+
+const heroMobilePreload = await getImage({
+  src: heroFeatured,
+  width: 640,
+  format: 'webp',
+});
+import hero1 from '../../assets/images/gallery/hero1.webp';
+import hero2 from '../../assets/images/gallery/hero2.webp';
+import hero3 from '../../assets/images/gallery/hero3.webp';
+import hero4 from '../../assets/images/gallery/hero4.webp';
+import Button from '../ui/Button.astro';
+
+const schedule = "Lun–Vie 11:00–22:00 · Sáb 12:00–17:00";
+---
+
+<link rel="preload" href={heroMobilePreload.src} as="image" fetchpriority="high" />
+<section id="hero" class="hero-section">
+  <div class="hero-bg-layer" aria-hidden="true">
+    <Image
+      src={heroFeatured}
+      alt=""
+      class="hero-bg-img"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      width={1376}
+      height={768}
+      layout="full-width"
+    />
+  </div>
+
+  <div class="hero-overlay-layer" aria-hidden="true"></div>
+
+  <div class="container hero-container">
+    <div class="hero-body">
+      <div class="hero-content fade-in">
+        <h1 class="hero-title">New Roll<br /><span class="highlight">SUSHI</span></h1>
+        <p class="hero-subtitle">
+          Dale un regalo a tu estómago y pasa un momento agradable con nosotros.
+        </p>
+        <div class="hero-actions">
+          <Button href="#menu" variant="primary" class="hero-cta">Ver Carta</Button>
+          <a href="#contact" class="secondary-link">Horarios y Local</a>
+        </div>
+      </div>
+
+      <!-- Collage asimétrico con texto vertical japonés -->
+      <div class="hero-collage fade-in">
+        <span class="vertical-japanese" aria-hidden="true">ニューロール</span>
+        
+        <div class="collage-item item-1">
+          <Image
+            src={hero1}
+            alt="Interior del local de New Roll Sushi"
+            class="collage-img"
+            width={280}
+            height={140}
+          />
+        </div>
+        
+        <div class="collage-item item-2">
+          <Image
+            src={hero2}
+            alt="Chef preparando rolls al fuego"
+            class="collage-img"
+            width={180}
+            height={180}
+          />
+        </div>
+
+        <div class="collage-item item-3">
+          <Image
+            src={hero3}
+            alt="New Roll Especial destacado"
+            class="collage-img"
+            width={160}
+            height={160}
+          />
+        </div>
+
+        <div class="collage-item item-4">
+          <Image
+            src={hero4}
+            alt="Nigiri de salmón fresco"
+            class="collage-img"
+            width={170}
+            height={170}
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-info">
+      <div class="hero-info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>{schedule}</span>
+      </div>
+
+      <div class="hero-socials">
+        <a href="https://instagram.com/newrolltemuco/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hero-social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://facebook.com/NEWROLLTEMUCO/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="hero-social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    position: relative;
+    min-height: calc(100vh - 72px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--color-bg);
+  }
+
+  .hero-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: blur(6px) brightness(0.35);
+    transform: scale(1.1);
+  }
+
+  .hero-overlay-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 20, 18, 0.65) 0%,
+      rgba(26, 20, 18, 0.35) 50%,
+      rgba(26, 20, 18, 0.85) 100%
+    );
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 72px);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .hero-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 580px;
+    padding-bottom: 2rem; /* Evita que quede muy pegado abajo */
+  }
+
+  .hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    -webkit-text-stroke: 0.4px currentColor;
+  }
+
+  .highlight {
+    color: var(--color-secondary);
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    line-height: 1.2;
+    display: inline-block;
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    max-width: 40ch;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+    opacity: 0.85;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .hero-cta {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 900;
+    padding: 0.9rem 2rem;
+    border: 2px solid var(--color-primary);
+  }
+
+  .secondary-link {
+    font-family: var(--font-serif);
+    font-weight: 900;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--color-secondary);
+    padding-bottom: 2px;
+    transition: color 0.2s ease;
+  }
+
+  .secondary-link:hover {
+    color: var(--color-secondary);
+  }
+
+  /* Estilos del Collage de Imágenes */
+  .hero-collage {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    display: block;
+  }
+
+  .vertical-japanese {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: var(--font-serif);
+    font-size: 5.4rem; /* Ajustado para sobrepasar el collage sin colisionar con otros elementos */
+    font-weight: 900;
+    color: var(--color-secondary); /* Rellena con el color amarillo de la marca */
+    -webkit-text-stroke: 2px var(--color-secondary); /* Engrosa las letras usando un trazo amarillo de la marca */
+    text-shadow:
+      -1.5px -1.5px 0 #000,
+       1.5px -1.5px 0 #000,
+      -1.5px  1.5px 0 #000,
+       1.5px  1.5px 0 #000,
+      -1.5px  0px   0 #000,
+       1.5px  0px   0 #000,
+       0px   -1.5px 0 #000,
+       0px    1.5px 0 #000,
+       0 6px 20px rgba(0, 0, 0, 0.85); /* Bordes negros gruesos y sombra profunda para legibilidad */
+    opacity: 0.95; /* Mayor opacidad para que no se trasluzca en pantallas con menor brillo */
+    z-index: 6; /* Pasa por el frente cruzando el collage */
+    letter-spacing: 0.15em;
+    pointer-events: none;
+    line-height: 1;
+    white-space: nowrap; /* Evita que la palabra se corte en dos columnas */
+    height: max-content;
+  }
+
+  .collage-item {
+    position: absolute;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid var(--color-card-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    background-color: var(--color-black);
+    transition: border-color 0.3s ease;
+  }
+
+  .collage-item:hover {
+    border-color: var(--color-secondary);
+  }
+
+  .collage-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Posiciones de la escalera asimétrica - Mayor separación */
+  .item-1 {
+    width: 250px;
+    height: 125px;
+    top: 2%;
+    right: 2%;
+    transform: rotate(-1.5deg);
+    z-index: 1;
+  }
+
+  .item-2 {
+    width: 170px;
+    height: 170px;
+    top: 22%;
+    left: 2%;
+    transform: rotate(2deg);
+    z-index: 3;
+  }
+
+  .item-3 {
+    width: 150px;
+    height: 150px;
+    bottom: 2%;
+    left: 25%;
+    transform: rotate(-3deg);
+    z-index: 4;
+  }
+
+  .item-4 {
+    width: 160px;
+    height: 160px;
+    top: 44%;
+    right: 2%;
+    transform: rotate(-1deg);
+    z-index: 5;
+  }
+
+  .hero-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .hero-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    font-family: var(--font-sans);
+  }
+
+  .hero-info-item svg {
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+
+  .hero-socials {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .hero-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--color-text);
+    opacity: 0.7;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .hero-social-link:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  @media (max-width: 1100px) {
+    .hero-body {
+      gap: 2rem;
+    }
+    .vertical-japanese {
+      font-size: 3.5rem;
+    }
+    .item-1 { width: 210px; height: 105px; }
+    .item-2 { width: 140px; height: 140px; }
+    .item-3 { width: 130px; height: 130px; }
+    .item-4 { width: 140px; height: 140px; }
+  }
+
+  @media (max-width: 900px) {
+    .hero-title {
+      font-size: 3.2rem;
+    }
+  }
+
+  /* Responsive Mobile - Colapsa y reubica verticalmente */
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: auto;
+      padding-top: 1.5rem;
+      padding-bottom: 2rem;
+    }
+
+    .hero-container {
+      min-height: auto;
+      justify-content: flex-start;
+      gap: 2rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .hero-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .hero-content {
+      text-align: center;
+      align-items: center;
+      max-width: 100%;
+      padding-bottom: 0;
+      order: 1; /* Título y botones primero */
+    }
+
+    .hero-collage {
+      order: 2; /* El collage en segundo lugar */
+      height: 320px; /* Incrementado para dar más separación vertical */
+      margin-top: 3rem; /* Incrementado de 1rem a 3rem para separar del botón Ver Menú */
+      margin-bottom: 3rem; /* Incrementado de 1rem a 3rem para simetría con el margen superior */
+    }
+
+    .vertical-japanese {
+      font-size: 3.4rem; /* Ajustado para sobrepasar el collage de 320px en móvil sin tocar textos/horarios */
+      left: 50%;
+      z-index: 5;
+    }
+
+    /* Ocultamos 2 imágenes en móvil para mantener el rendimiento y espacio limpio */
+    .item-1 {
+      display: none;
+    }
+    
+    .item-4 {
+      display: none;
+    }
+
+    /* Posicionamos las otras 2 en puntos opuestos abarcando mayor espacio y sin tocarse */
+    .item-2 {
+      width: 140px;
+      height: 140px;
+      top: 2%;
+      left: auto; /* Limpia el posicionamiento heredado de desktop */
+      right: 50%;
+      margin-right: 10px; /* Desplazado a la izquierda del eje central */
+      transform: rotate(2deg);
+      z-index: 3;
+    }
+
+    .item-3 {
+      width: 140px;
+      height: 140px;
+      bottom: 2%;
+      left: 50%;
+      margin-left: 10px; /* Desplazado a la derecha del eje central */
+      right: auto; /* Limpia el posicionamiento heredado de desktop */
+      transform: rotate(-3deg);
+      z-index: 4;
+    }
+
+    .hero-subtitle {
+      max-width: 100%;
+    }
+
+    .hero-title {
+      font-size: 3.2rem;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+      gap: 1rem;
+    }
+
+    .cta-link, .hero-cta {
+      width: 100%;
+    }
+
+    .hero-info {
+      order: 3; /* Horarios al final */
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      width: 100%;
+    }
+  }
+</style>
+
+

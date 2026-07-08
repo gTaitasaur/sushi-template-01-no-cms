@@ -1,0 +1,132 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import CartDrawer from '../components/layout/CartDrawer.astro';
+import ProductDetailDrawer from '../components/layout/ProductDetailDrawer.astro';
+import fs from 'fs';
+
+const tokensCSS = fs.readFileSync('src/styles/tokens.css', 'utf-8');
+const globalCSS = fs.readFileSync('src/styles/global.css', 'utf-8').replace('@import "./tokens.css";', '');
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage = '/og-image.jpg' } = Astro.props;
+
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const siteUrl = import.meta.env.SITE_URL || '';
+const isProd = !!siteUrl && !!gaId && !gaId.includes('TEST');
+// Construir URL absoluta para og:image si es una ruta relativa y siteUrl está disponible
+const ogImageUrl = ogImage.startsWith('/') && siteUrl 
+  ? `${siteUrl.replace(/\/$/, '')}${ogImage}` 
+  : ogImage;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="preload" href="/fonts/hina-mincho/Hina-Mincho-Regular.subset.woff2" as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={tokensCSS + globalCSS}></style>
+    {isProd && <link rel="preconnect" href="https://www.googletagmanager.com" />}
+    <meta name="theme-color" content="#1A1412" />
+    <meta name="color-scheme" content="dark" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    {isProd && (
+      <>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <CartDrawer />
+    <ProductDetailDrawer />
+
+    <script is:inline>
+      // Scroll-reveal: activar elementos con clase .reveal al entrar en viewport
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      });
+
+      // Interceptor de navegación suave para mantener la URL limpia en el navegador
+      document.body.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        if (href.startsWith('#') || href.startsWith('/#')) {
+          const hashIdx = href.indexOf('#');
+          if (hashIdx === -1) return;
+          const targetId = href.substring(hashIdx);
+          const targetEl = document.querySelector(targetId);
+          
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }
+      });
+    </script>
+
+    <style>
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 1rem;
+        background-color: var(--color-secondary);
+        color: var(--color-black);
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-family: var(--font-sans);
+        font-weight: 700;
+        font-size: 0.9rem;
+        z-index: 200;
+        text-decoration: none;
+        transition: top 0.2s ease;
+      }
+      .skip-link:focus {
+        top: 0.5rem;
+      }
+    </style>
+  </body>
+</html>
+

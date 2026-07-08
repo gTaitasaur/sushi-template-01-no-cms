@@ -1,0 +1,9 @@
+{
+  "id": "palito",
+  "name": "Palito",
+  "description": "Par de palitos extra de bamboo.",
+  "price": 500,
+  "category": "extras",
+  "image": "../../assets/images/menu/extras.webp",
+  "featured": false
+}

@@ -1,0 +1,9 @@
+{
+  "id": "handroll-champinon-xl",
+  "name": "Handroll Champiñón XL",
+  "description": "Relleno de champiñón, queso crema y cebollín.",
+  "price": 3900,
+  "category": "handrolls",
+  "image": "../../assets/images/menu/arma-tu-roll.webp",
+  "featured": false
+}

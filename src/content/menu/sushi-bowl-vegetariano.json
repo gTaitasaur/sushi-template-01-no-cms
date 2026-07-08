@@ -1,0 +1,9 @@
+{
+  "id": "sushi-bowl-vegetariano",
+  "name": "Sushi Bowl Vegetariano",
+  "description": "Deliciosa combinación de arroz, brocoli, pepino, palta, queso crema, tomate, y choclo, ideal para comer donde quieras.",
+  "price": 8990,
+  "category": "sushi-bowl",
+  "image": "../../assets/images/menu/sushibowl.webp",
+  "featured": false
+}

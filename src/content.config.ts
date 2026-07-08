@@ -1,19 +1,33 @@
-import { glob } from "astro/loaders";
-import { defineCollection } from "astro:content";
-import { z } from "astro/zod";
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
+import { glob } from 'astro/loaders';
 
-const blog = defineCollection({
-	// Load Markdown and MDX files in the `src/content/blog/` directory.
-	loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
-	// Type-check frontmatter using a schema
-	schema: z.object({
-		title: z.string(),
-		description: z.string(),
-		// Transform string to Date object
-		pubDate: z.coerce.date(),
-		updatedDate: z.coerce.date().optional(),
-		heroImage: z.string().optional(),
-	}),
+const menuCollection = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{json,yaml,yml,md,mdx}', base: './src/content/menu' }),
+  schema: ({ image }) => z.object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
+    price: z.number(),
+    category: z.string(),
+    image: image().optional(),
+    featured: z.boolean().optional(),
+  })
 });
 
-export const collections = { blog };
+const locationsCollection = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{json,yaml,yml,md,mdx}', base: './src/content/locations' }),
+  schema: z.object({
+    id: z.string(),
+    name: z.string(),
+    address: z.string(),
+    phone: z.string(),
+    schedule: z.string(),
+    mapUrl: z.string().optional(),
+  })
+});
+
+export const collections = {
+  'menu': menuCollection,
+  'locations': locationsCollection,
+};

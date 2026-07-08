@@ -1,0 +1,9 @@
+{
+  "id": "lata-cocacola",
+  "name": "Lata Cocacola",
+  "description": "Refrescante, el acompañamiento ideal de unos piches tacos.",
+  "price": 1990,
+  "category": "bebestibles",
+  "image": "../../assets/images/menu/extras.webp",
+  "featured": false
+}

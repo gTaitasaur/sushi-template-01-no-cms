@@ -1,0 +1,9 @@
+{
+  "id": "sushi-burguer-salmon",
+  "name": "Sushi Burguer de Salmón",
+  "description": "La combinación perfecta entre los sabores de Japón y la modernidad actual. rellena de salmón apanado, acompañado de palta, queso crema y cebollín.",
+  "price": 9990,
+  "category": "sushi-burguer",
+  "image": "../../assets/images/menu/sushiburguer.webp",
+  "featured": false
+}

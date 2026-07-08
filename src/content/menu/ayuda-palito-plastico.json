@@ -1,0 +1,9 @@
+{
+  "id": "ayuda-palito-plastico",
+  "name": "Ayuda palito plástico reutilizable",
+  "description": "Una ayuda para aquellas personas que aun no dominan el arte de comer con palitos, reutilizables, higiénicos, color aleatorio si no especifica o según disponibilidad.",
+  "price": 500,
+  "category": "extras",
+  "image": "../../assets/images/menu/extras.webp",
+  "featured": false
+}

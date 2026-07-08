@@ -1,0 +1,198 @@
+---
+import logo from '../../assets/images/logo.png';
+---
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo-wrapper">
+        <div class="footer-logo-aura">
+          <img src={logo.src} alt="New Roll Sushi Logo" class="footer-logo" width="56" height="56" />
+        </div>
+        <div class="logo-text">
+          <span class="text-line-1">New Roll</span>
+          <span class="text-line-2">Sushi</span>
+        </div>
+      </div>
+      <p class="brand-desc">Una experiencia fresca de sabores directo en tu paladar.</p>
+    </div>
+    
+    <div class="footer-schedule">
+      <h4>Horario General</h4>
+      <p>Lunes a Viernes: 11:00 a 22:00</p>
+      <p>Sábado: 12:00 a 17:00</p>
+      <p>Domingo: Cerrado</p>
+    </div>
+
+    <div class="footer-socials">
+      <h4>Redes</h4>
+      <div class="social-links">
+        <a href="https://instagram.com/newrolltemuco/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://facebook.com/NEWROLLTEMUCO/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          <span>Facebook</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <div class="container bottom-container">
+      <p>&copy; {new Date().getFullYear()} New Roll Sushi Temuco.</p>
+      <!-- CONTENIDO TEMPORAL DE DESARROLLO -->
+      <p class="dev-tag"><small><a href="https://github.com/gTaitasaur" target="_blank" rel="noopener noreferrer">Creado por Christian</a></small></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-black);
+    border-top: 1px solid var(--color-card-border);
+    padding: 3rem 0 1.5rem 0;
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-logo-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .footer-logo-aura {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 8px 2px rgba(244, 208, 63, 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .footer-logo-aura:hover {
+    box-shadow: 0 0 14px 4px rgba(244, 208, 63, 0.35);
+  }
+
+  .footer-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .footer-logo-aura:hover .footer-logo {
+    transform: scale(1.06);
+  }
+
+  .logo-text {
+    display: flex; /* Visible en todas las vistas en el footer */
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 0.75rem;
+    line-height: 1.1;
+    font-family: var(--font-serif);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .text-line-1 {
+    color: var(--color-primary); /* Rojo */
+    font-size: 1.05rem;
+    -webkit-text-stroke: 0.6px var(--color-primary); /* Grosor extra */
+  }
+
+  .text-line-2 {
+    color: var(--color-secondary); /* Amarillo */
+    font-size: 0.9rem;
+    -webkit-text-stroke: 0.6px var(--color-secondary); /* Grosor extra */
+  }
+
+  .brand-desc {
+    font-size: 0.9rem;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+
+  .footer-grid h4 {
+    font-family: var(--font-serif);
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-grid p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    width: fit-content;
+  }
+
+  .social-link:hover {
+    color: var(--color-secondary);
+  }
+
+  .social-link svg {
+    flex-shrink: 0;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--color-card-border);
+    padding-top: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  .bottom-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .dev-tag {
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .bottom-container {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

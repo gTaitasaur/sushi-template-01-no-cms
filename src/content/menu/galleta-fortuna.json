@@ -1,0 +1,9 @@
+{
+  "id": "galleta-fortuna",
+  "name": "Galleta de la fortuna",
+  "description": "Deliciosa galleta de vainilla con un mensaje del destino en su interior. Si no te sale un papelito es porque tu destino aun no esta escrito.",
+  "price": 500,
+  "category": "extras",
+  "image": "../../assets/images/menu/extras.webp",
+  "featured": false
+}

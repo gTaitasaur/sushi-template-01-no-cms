@@ -1,0 +1,9 @@
+{
+  "id": "sushi-bowl-salmon",
+  "name": "Sushi Bowl de Salmón",
+  "description": "Deliciosa combinación de arroz, salmón, camarones y kanikama, palta, queso crema y cebollín, ideal para comer donde quieras.",
+  "price": 9990,
+  "category": "sushi-bowl",
+  "image": "../../assets/images/menu/sushibowl.webp",
+  "featured": false
+}

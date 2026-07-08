@@ -1,0 +1,324 @@
+---
+import { getCollection } from 'astro:content';
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+
+const locations = await getCollection('locations');
+---
+<section id="contact" class="contact-section reveal reveal-delay-3">
+  <div class="container">
+    <div class="contact-header">
+      <h2 class="contact-title">Nuestro Local</h2>
+      <p class="contact-lead">Visítanos en nuestras sucursales o contáctanos para retiros y delivery local.</p>
+    </div>
+
+    <div class="locations-container">
+      {locations.map(loc => {
+        return (
+          <Card 
+            class="location-card" 
+            data-location-id={loc.data.id}
+            data-week-open="11:00"
+            data-week-close="22:00"
+            data-sat-open="12:00"
+            data-sat-close="17:00"
+          >
+            <div class="location-details">
+              <div class="location-title-status">
+                <h3 class="location-name">{loc.data.name}</h3>
+                <span class="status-badge" id={`status-${loc.data.id}`}>Cargando estado...</span>
+              </div>
+              
+              <div class="info-list">
+                <div class="info-item">
+                  <span class="info-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </span>
+                  <p class="info-text">{loc.data.address}</p>
+                </div>
+                <div class="info-item">
+                  <span class="info-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <a href={`https://wa.me/${loc.data.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola New Roll Sushi! Me gustaría hacer un pedido.')}`} target="_blank" rel="noopener noreferrer" class="info-phone-link">
+                    {loc.data.phone}
+                  </a>
+                </div>
+                <div class="info-item">
+                  <span class="info-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  </span>
+                  <p class="info-text">{loc.data.schedule}</p>
+                </div>
+              </div>
+
+              {loc.data.mapUrl && (
+                <div class="location-actions">
+                  <Button 
+                    href={loc.data.mapUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    variant="outline" 
+                    class="w-full"
+                  >
+                    Ver en Google Maps
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <!-- Mapa embebido con filtro oscuro Izakaya -->
+            <div class="location-map">
+              <iframe 
+                src="https://www.google.com/maps?q=New+Roll+Sushi+Temuco+Manuel+Montt+290+Loc+25+Temuco&output=embed&z=16" 
+                width="100%" 
+                height="220" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+                title={`Mapa de ubicación de ${loc.data.name}`}
+              ></iframe>
+            </div>
+          </Card>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  const getChileTime = () => {
+    const now = new Date();
+    const chileStr = now.toLocaleString('en-US', { timeZone: 'America/Santiago' });
+    const chileDate = new Date(chileStr);
+    return {
+      day: chileDate.getDay(),
+      hour: chileDate.getHours(),
+      minute: chileDate.getMinutes(),
+      currentTime: chileDate.getHours() + (chileDate.getMinutes() / 60),
+    };
+  };
+
+  const parseTime = (timeStr: string) => {
+    const [h, m] = timeStr.split(':').map(Number);
+    return h + (m / 60);
+  };
+
+  const updateStoreStatus = () => {
+    const cards = document.querySelectorAll('.location-card');
+    const { day, currentTime } = getChileTime();
+
+    cards.forEach(card => {
+      const cardEl = card as HTMLElement;
+      const id = cardEl.getAttribute('data-location-id');
+      const badge = document.getElementById(`status-${id}`);
+      
+      if (!badge) return;
+
+      let isOpen = false;
+
+      if (day === 0) {
+        // Domingo: cerrado
+        isOpen = false;
+      } else if (day === 6) {
+        // Sábado: 12:00–17:00
+        const openTime = parseTime(cardEl.getAttribute('data-sat-open') || '12:00');
+        const closeTime = parseTime(cardEl.getAttribute('data-sat-close') || '17:00');
+        isOpen = currentTime >= openTime && currentTime < closeTime;
+      } else {
+        // Lunes a Viernes: 11:00–22:00
+        const openTime = parseTime(cardEl.getAttribute('data-week-open') || '11:00');
+        const closeTime = parseTime(cardEl.getAttribute('data-week-close') || '22:00');
+        isOpen = currentTime >= openTime && currentTime < closeTime;
+      }
+
+      if (isOpen) {
+        badge.textContent = 'Abierto Ahora';
+        badge.className = 'status-badge status-open';
+      } else {
+        badge.textContent = 'Cerrado Ahora';
+        badge.className = 'status-badge status-closed';
+      }
+    });
+  };
+
+  updateStoreStatus();
+  setInterval(updateStoreStatus, 60000);
+  
+  document.addEventListener('astro:after-swap', updateStoreStatus);
+</script>
+
+<style>
+  .contact-section {
+    background-color: var(--color-bg);
+    padding: 5rem 0;
+    border-top: 1px solid var(--color-card-border);
+  }
+
+  .contact-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .contact-title {
+    font-size: 2.2rem;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+    -webkit-text-stroke: 0.4px currentColor;
+  }
+
+  .contact-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 25%;
+    right: 25%;
+    height: 3px;
+    background-color: var(--color-primary); /* Rojo */
+  }
+
+  .contact-lead {
+    font-size: 1.2rem;
+    max-width: 60ch;
+    margin: 1.5rem auto 0 auto;
+    color: var(--color-text-muted);
+  }
+
+  .locations-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* Location Card modification to fit split information and map */
+  :global(.location-card) {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+    align-items: center;
+    padding: 2rem !important;
+  }
+
+  .location-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .location-title-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid var(--color-card-border);
+    padding-bottom: 1rem;
+  }
+
+  .location-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .status-badge {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid transparent;
+  }
+
+  .status-open {
+    background-color: rgba(217, 160, 91, 0.12);
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+  }
+
+  .status-closed {
+    background-color: rgba(200, 62, 49, 0.1);
+    color: var(--color-primary); /* Rojo */
+    border-color: var(--color-primary);
+    opacity: 0.8;
+  }
+
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--color-secondary);
+    margin-top: 2px;
+  }
+
+  .info-text {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .info-phone-link {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .info-phone-link:hover {
+    color: var(--color-secondary);
+  }
+
+  .location-actions {
+    margin-top: 0.5rem;
+  }
+
+  :global(.w-full) {
+    width: 100%;
+  }
+
+  .location-map {
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--color-card-border);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    /* Dark Theme Map Filter */
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+  }
+
+  .location-map iframe {
+    display: block;
+  }
+
+  /* Responsive stacking on tablet/mobile */
+  @media (max-width: 900px) {
+    :global(.location-card) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem !important;
+    }
+    
+    .location-map {
+      order: -1; /* Place map first on small screens */
+    }
+  }
+</style>
+

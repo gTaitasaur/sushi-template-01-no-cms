@@ -1,0 +1,9 @@
+{
+  "id": "empanadas-queso-fritas",
+  "name": "Empanadas de Queso Fritas Media Luna",
+  "description": "6 Empanadas fritas, rellenas de un delicioso queso fundido.",
+  "price": 4500,
+  "category": "rico-picoteo",
+  "image": "../../assets/images/menu/ricopicoteo.webp",
+  "featured": false
+}

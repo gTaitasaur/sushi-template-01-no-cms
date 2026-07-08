@@ -1,0 +1,18 @@
+/* Tokens de diseño: variables CSS de paleta de colores y tipografía */
+:root {
+  /* Colores - Izakaya Callejero */
+  --color-bg: #1A1412;          /* Madera oscura / Noche */
+  --color-text: #FBF9F5;        /* Blanco cálido (Contraste 14.8:1) */
+  --color-text-muted: #D1C5C0;  /* Blanco cálido atenuado para descripciones */
+  --color-primary: #C83E31;     /* Rojo linterna japonesa (Chochin) */
+  --color-secondary: #D9A05B;   /* Madera de roble / Dorado rústico */
+  --color-card-bg: #241C1A;      /* Pizarra oscura */
+  --color-card-border: #3A2F2B;  /* Borde sutil de pizarra */
+  --color-black: #000000;
+
+  /* Fuentes:
+   * --font-serif: Hina Mincho (serif japonesa) → títulos, navbar, logo
+   * --font-sans: Zen Kaku Gothic Antique (sans-serif japonesa) → body, botones, cards */
+  --font-serif: 'Hina Mincho', 'Noto Serif JP', Georgia, serif;
+  --font-sans: 'Noto Serif JP', Georgia, 'Times New Roman', serif;
+}

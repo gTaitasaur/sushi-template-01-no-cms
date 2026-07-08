@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import Menu from '../../components/sections/Menu.astro';
+import Gallery from '../../components/sections/Gallery.astro';
+
+interface Props {
+  entry: CollectionEntry<'locations'>;
+}
+
+export async function getStaticPaths() {
+  const locations = await getCollection('locations');
+  return locations.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { name, address, phone, schedule, mapUrl } = entry.data;
+---
+
+<BaseLayout 
+  title={`Sushi Landing — ${name}`} 
+  description={`Visita nuestra sucursal de sushi en ${address}. Teléfono: ${phone}. Horario de atención: ${schedule}.`}
+>
+  <!-- Encabezado contextual para la sucursal específica -->
+  <header class="sucursal-header-banner" style="padding: 2rem; background: #fafafa; border-bottom: 1px solid #eaeaea; text-align: center;">
+    <h1>{name}</h1>
+    <p>{address}</p>
+    <p><strong>Teléfono:</strong> <a href={`tel:${phone.replace(/\s+/g, '')}`}>{phone}</a></p>
+    <p><strong>Horario:</strong> {schedule}</p>
+    {mapUrl && (
+      <a href={mapUrl} target="_blank" rel="noopener noreferrer" style="color: #ff4b4b; text-decoration: underline;">
+        Ver en Google Maps
+      </a>
+    )}
+  </header>
+
+  <!-- Cuerpo de la Landing Page asociado a esta sucursal -->
+  <Hero />
+  <Menu />
+  <Gallery />
+</BaseLayout>

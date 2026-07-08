@@ -1,0 +1,9 @@
+{
+  "id": "ebi-katsu",
+  "name": "Ebi Katsu",
+  "description": "Colitas de camarón Ecuatoriano, apanadas y fritas, acompañadas de la salsa de la casa.",
+  "price": 5500,
+  "category": "rico-picoteo",
+  "image": "../../assets/images/menu/ricopicoteo.webp",
+  "featured": false
+}
