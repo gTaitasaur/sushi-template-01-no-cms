@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "npx wrangler deploy"
+    "deploy": "npx wrangler deploy --name $(echo $CLOUDFLARE_PROJECT_NAME || echo sushi-template-no-cms)"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
