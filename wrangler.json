@@ -1,0 +1,9 @@
+{
+  "name": "sushi-template-01-no-cms",
+  "compatibility_date": "2026-07-09",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "upload_source_maps": true
+}
