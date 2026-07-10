@@ -1,6 +1,6 @@
 {
   // 🚧 CAMBIA ESTE NOMBRE por cada proyecto (debe ser único en Cloudflare)
-  "name": "sushi-template-no-cms",
+  "name": "sushi-template-01-no-cms",
   "compatibility_date": "2026-07-09",
   "assets": {
     "directory": "./dist",
