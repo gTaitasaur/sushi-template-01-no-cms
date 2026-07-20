@@ -4,6 +4,6 @@
   "description": "Deliciosa combinación de arroz, brocoli, pepino, palta, queso crema, tomate, y choclo, ideal para comer donde quieras.",
   "price": 8990,
   "category": "sushi-bowl",
-  "image": "../../assets/images/menu/sushibowl.webp",
+  "image": "../../assets/images/menu/sushi-bowl.webp",
   "featured": false
 }
