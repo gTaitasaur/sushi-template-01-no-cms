@@ -481,7 +481,7 @@
 <script>
   const PLACEHOLDER_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23241c1a'/><path d='M35 45a5 5 0 100-10 5 5 0 000 10zM25 70h50L60 50 45 65l-10-10z' fill='%233a2f2b'/></svg>";
   let cart: Array<{id: string, name: string, price: number, image: string, quantity: number, isCustom: boolean, customDetails: {envoltura: string, rellenos: string[], topping: string} | null}> = [];
-  const WHATSAPP_PHONE = '56933482140';
+  const WHATSAPP_PHONE = '56954973890';
 
   // Referencias del DOM
   const overlay = document.getElementById('cart-overlay');
@@ -805,7 +805,7 @@
 
   // Compilar y codificar el pedido de WhatsApp
   function buildWhatsappLink(total: number) {
-    let msg = `*NUEVO PEDIDO — New Roll Sushi*\n\n`;
+    let msg = `*NUEVO PEDIDO — Tu Tienda Sushi*\n\n`;
     msg += `*Detalle de la compra:*\n`;
     msg += `-------------------------------------------\n`;
 
